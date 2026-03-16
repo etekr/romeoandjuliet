@@ -5,16 +5,17 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public float kissProgress = 0f;
-    public float kissGoal = 3f; // seconds of kissing needed to win
+    public float kissGoal = 3f;
     public bool gameOver = false;
     public bool gameWon = false;
 
     public GameObject gameOverScreen;
     public GameObject winScreen;
+    public Slider kissProgressBar; // new!
 
     void Update()
     {
-        if (gameOver || gameWon) return; // stop tracking if game has ended
+        if (gameOver || gameWon) return;
     }
 
     public void AddKissProgress(float amount)
@@ -22,6 +23,12 @@ public class GameManager : MonoBehaviour
         if (gameOver || gameWon) return;
 
         kissProgress += amount;
+        
+        // update the slider visually
+        if (kissProgressBar != null)
+        {
+            kissProgressBar.value = kissProgress;
+        }
 
         if (kissProgress >= kissGoal)
         {
