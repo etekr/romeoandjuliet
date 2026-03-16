@@ -1,12 +1,12 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class KissingCouple : MonoBehaviour
 {
     public Sprite normalSprite;
     public Sprite kissingSprite;
 
-    public Watcher watcher; // drag your watcher object in here
+    public Watcher watcher;
+    public GameManager gameManager;
 
     private SpriteRenderer sr;
 
@@ -18,14 +18,19 @@ public class KissingCouple : MonoBehaviour
 
     void Update()
     {
-        if (Mouse.current.leftButton.isPressed) // player is holding the button
+        if (gameManager.gameOver || gameManager.gameWon) return;
+
+        if (Input.GetMouseButton(0))
         {
             sr.sprite = kissingSprite;
 
-            if (watcher.isLooking) // caught!
+            if (watcher.isLooking)
             {
-                Debug.Log("CAUGHT!");
-                // we'll replace this with real game over logic in Step 5
+                gameManager.TriggerGameOver();
+            }
+            else
+            {
+                gameManager.AddKissProgress(Time.deltaTime);
             }
         }
         else
